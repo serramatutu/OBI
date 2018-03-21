@@ -5,3 +5,6 @@ Compilação:
 ```
 g++ -std=C++11 -lm -o executavel fonte.cpp
 ```
+
+## Cuidados
+- Overflow de variáveis
