@@ -9,7 +9,11 @@ import shutil
 
 def get_os_command(program_invoke, input_file_name):
     if os.name == 'nt':
-        return "%s < %s" % (program_invoke, input_file_name)
+        print(len(program_invoke.split()))
+        if len(program_invoke.split()) < 2:
+            return "\"%s\" < %s" % (program_invoke, input_file_name)
+        else:
+            return "%s < %s" % (program_invoke, input_file_name)
     elif os.name == 'posix':
         return "cat %s | %s" % (input_file_name, program_invoke)
     else:
@@ -18,7 +22,7 @@ def get_os_command(program_invoke, input_file_name):
 def teste(program_invoke, args):
     all_testcases_ok = True
 
-    program_invoke = (program_invoke) % (args.folder)
+    program_invoke = (program_invoke) % (args.folder, args.solution)
 
     for teste in glob('%s/teste*.txt' % (args.folder)):
         print('-' * 80)
@@ -70,6 +74,12 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        dest='solution', 
+        type=str,
+        help='Nome do criador da solução'
+    )
+
+    parser.add_argument(
         dest='folder',
         type=str,
         help='Nome da pasta da solução'
@@ -81,16 +91,16 @@ if __name__ == "__main__":
 
     if args.language == 'py':
 
-        teste('python3 %s/solution.py', args)
+        teste('python %s/%s/solution.py', args)
 
     elif args.language == 'cpp':
 
-        if not os.path.exists('temp'):
-            os.makedirs('temp')
+        if not os.path.exists('temp/%s' % (args.folder)):
+            os.makedirs('temp/%s' % (args.folder))
 
-        os.popen('g++ -std=c++11 -lm -o "temp/%s.exe" %s/solution.cpp' % (args.folder, args.folder)).read()
+        os.popen('g++ -std=c++11 -lm -o "temp/%s/%s.exe" %s/%s/solution.cpp' % (args.folder, args.solution, args.folder, args.solution)).read()
 
-        teste('temp/%s.exe', args)
+        teste('temp/%s/%s.exe', args)
 
         shutil.rmtree('temp', ignore_errors=True)
 
