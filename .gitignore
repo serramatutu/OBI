@@ -1,5 +1,5 @@
 # criado pelo script de teste
-temp/
+bin/
 
 # Created by https://www.gitignore.io/api/c++,visualstudiocode
 
@@ -38,7 +38,8 @@ temp/
 *.app
 
 ### VisualStudioCode ###
-.vscode/*
+# .vscode/*
+.vscode/settings.json
 .history
 
 

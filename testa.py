@@ -95,14 +95,14 @@ if __name__ == "__main__":
 
     elif args.language == 'cpp':
 
-        if not os.path.exists('temp/%s' % (args.folder)):
-            os.makedirs('temp/%s' % (args.folder))
+        if not os.path.exists('bin/%s' % (args.folder)):
+            os.makedirs('bin/%s' % (args.folder))
 
-        os.popen('g++ -std=c++11 -lm -o "temp/%s/%s.exe" %s/%s/solution.cpp' % (args.folder, args.solution, args.folder, args.solution)).read()
+        os.popen('g++ -std=c++11 -lm -o "bin/%s/%s.exe" %s/%s/solution.cpp' % (args.folder, args.solution, args.folder, args.solution)).read()
 
-        teste('temp/%s/%s.exe', args)
+        teste('bin/%s/%s.exe', args)
 
-        shutil.rmtree('temp', ignore_errors=True)
+        shutil.rmtree('bin', ignore_errors=True)
 
     else:
         print('Linguagem `%s` não disponível: ' % (args.language))
