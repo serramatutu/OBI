@@ -9,7 +9,6 @@ import shutil
 
 def get_os_command(program_invoke, input_file_name):
     if os.name == 'nt':
-        print(len(program_invoke.split()))
         if len(program_invoke.split()) < 2:
             return "\"%s\" < %s" % (program_invoke, input_file_name)
         else:
