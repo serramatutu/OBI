@@ -3,17 +3,33 @@
 
 using namespace std;
 
+vector<int> moradores;
+// vetor de acompanhamento para programação dinâmica
+vector<long> anteriores;
+int ultimoCorreto;
+
+// atualiza o vetor até estar correto
+// até o andar desejado
+void update(int andar) {
+    while (ultimoCorreto < andar) {
+        // corrige o primeiro errado
+        anteriores[ultimoCorreto + 1] = anteriores[ultimoCorreto] + moradores[ultimoCorreto + 1];
+        // ele agora está certo
+        ultimoCorreto++;
+    }
+}
+
+int get(int andar) {
+    update(andar); // atualiza até o atual, caso ainda não o tenha feito
+    return anteriores[andar];
+}
+
 int main() {
     int nAndares, nEventos;
     cin >> nAndares >> nEventos;
 
-    vector<int> moradores;
     moradores.reserve(nAndares);
-
-    // vetor de acompanhamento para programação dinâmica
-    vector<long> prev;
-    prev.reserve(nAndares);
-    int lastCorrect = nAndares;
+    anteriores.reserve(nAndares);
 
     // Lê a quantidade inicial de pessoas em cada andar
     int sum = 0;
@@ -22,8 +38,9 @@ int main() {
         cin >> pessoas;
         sum += pessoas;
         moradores.push_back(pessoas);
-        prev.push_back(sum);
+        anteriores.push_back(sum);
     }
+    ultimoCorreto = nAndares - 1;
 
     // lê as instruções de bombeiro ou mudança
     for (int i=0; i<nEventos; i++) {
@@ -37,24 +54,14 @@ int main() {
             int pessoas;
             cin >> pessoas;
 
-            // atualiza o atual
             int delta = pessoas - moradores[andar];
+            update(andar); // atualiza tudo até o atual, caso ainda não esteja atualizado
             moradores[andar] = pessoas;
-            prev[andar] += delta;
-            // invalida todos os à frente
-            lastCorrect = andar;
+            anteriores[andar] += delta;
+            ultimoCorreto = andar; // a partir do atual, está desatualizado
         }
         else { // Bombeiro
-            // atualiza o vetor até estar correto
-            // até o andar desejado
-            while (lastCorrect < andar) {
-                // corrige o primeiro errado
-                prev[lastCorrect + 1] = prev[lastCorrect] + moradores[lastCorrect + 1];
-                // ele agora está certo
-                lastCorrect++;
-            }
-
-            cout << prev[andar] << endl;
+            cout << get(andar) << endl;
         }
     }
 
