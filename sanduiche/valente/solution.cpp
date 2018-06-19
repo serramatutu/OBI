@@ -46,7 +46,7 @@ int main() {
 
     sum = pieces[0];
     
-    while (!(maxRepeat && minRepeat)) {
+    while (!(maxRepeat && minRepeat) && (!maxRepeat || max < min)) {
         if (sum < d) {
             increaseMax();
         }
