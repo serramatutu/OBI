@@ -14,7 +14,7 @@ int dfs(int from, int to) {
     visited.insert(from);
 
     for (int neighbor : graph[from]) {
-        if (visited.count(neighbor) <= 0) {
+        if (visited.count(neighbor) <= 0) { // se não foi visitado
             count += dfs(neighbor, from);
         }
     }
@@ -31,7 +31,7 @@ int main() {
     minDiff = N;
     graph.resize(N);
 
-    for (int i=0; i<N; i++) {
+    for (int i=0; i<N-1; i++) {
         int a, b;
         cin >> a >> b;
         a--;
